@@ -4,7 +4,7 @@
 
 	<groupId>com.abubusoft.testing.compile</groupId>
 	<artifactId>compile-testing</artifactId>
-	<version>1.0.1-SNAPSHOT</version>
+	<version>1.0.1</version>
 
 	<name>Compile Testing</name>
 	<description>Utilities for testing compilation. Fork from com.abubusoft.testing.compile</description>
@@ -45,6 +45,18 @@
 		<developerConnection>scm:git:git@github.com:xcesco/compile-testing.git</developerConnection>
 		<url>https://github.com/xcesco/compile-testing</url>
 	</scm>	
+
+	<developers>
+			<developer>
+				<id>xcesco</id>
+				<name>Francesco Benincasa</name>
+				<email>abubusoft@gmail.com</email>
+				<roles>
+					<role>owner</role>
+					<role>developer</role>
+				</roles>
+			</developer>
+		</developers>
 
 	<dependencies>
 		<dependency>
