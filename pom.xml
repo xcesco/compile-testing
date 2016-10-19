@@ -2,31 +2,32 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
-	<parent>
-		<groupId>org.sonatype.oss</groupId>
-		<artifactId>oss-parent</artifactId>
-		<version>7</version>
-	</parent>
-
 	<groupId>com.abubusoft.testing.compile</groupId>
 	<artifactId>compile-testing</artifactId>
 	<version>1.0.1-SNAPSHOT</version>
 
 	<name>Compile Testing</name>
-	<description>Utilities for testing compilation.</description>
+	<description>Utilities for testing compilation. Fork from com.abubusoft.testing.compile</description>
 
 	<properties>
 		<guava.version>19.0</guava.version>
 		<truth.version>0.28</truth.version>
 		<junit.version>4.12</junit.version>
 		<jsr305.version>3.0.1</jsr305.version>
+
+		<!-- use UTF-8 for everything -->
+		<sourceEncoding>UTF-8</sourceEncoding>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 	</properties>
 
-	<url>http://github.com/google/compile-testing</url>
+	<url>http://github.com/xcesco/compile-testing</url>
+	
 	<issueManagement>
-		<system>GitHub</system>
-		<url>http://github.com/google/compile-testing/issues</url>
+		<system>GitHub Issues</system>
+		<url>https://github.com/xcesco/compile-testing/issues</url>
 	</issueManagement>
+	
 	<inceptionYear>2013</inceptionYear>
 	<licenses>
 		<license>
@@ -38,12 +39,13 @@
 	<prerequisites>
 		<maven>3.1.1</maven>
 	</prerequisites>
+	
 	<scm>
-		<connection>scm:git:http://github.com/google/compile-testing</connection>
-		<developerConnection>scm:git:git@github.com:google/compile-testing.git</developerConnection>
-		<url>http://github.com/google/compile-testing</url>
-		<tag>HEAD</tag>
-	</scm>
+		<connection>scm:git:https://github.com/xcesco/compile-testing.git</connection>
+		<developerConnection>scm:git:git@github.com:xcesco/compile-testing.git</developerConnection>
+		<url>https://github.com/xcesco/compile-testing</url>
+	</scm>	
+
 	<dependencies>
 		<dependency>
 			<groupId>junit</groupId>
@@ -80,8 +82,8 @@
 				<artifactId>maven-compiler-plugin</artifactId>
 				<version>3.1</version>
 				<configuration>
-					<source>1.6</source>
-					<target>1.6</target>
+					<source>1.7</source>
+					<target>1.7</target>
 					<compilerArgument>-Xlint:all</compilerArgument>
 					<showWarnings>true</showWarnings>
 					<showDeprecation>true</showDeprecation>
@@ -126,16 +128,16 @@
 				<toolsjar>${java.home}/../Classes/classes.jar</toolsjar>
 			</properties>
 		</profile>
+		
 		<profile>
-			<id>release</id>
-			<activation>
-				<activeByDefault>false</activeByDefault>
-			</activation>
+			<id>deploy</id>
+
 			<build>
 				<plugins>
 					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
 						<artifactId>maven-gpg-plugin</artifactId>
-						<version>1.4</version>
+						<version>1.6</version>
 						<executions>
 							<execution>
 								<id>sign-artifacts</id>
@@ -146,32 +148,72 @@
 							</execution>
 						</executions>
 					</plugin>
+					
+					<!-- deploy on sonatype -->
 					<plugin>
+						<groupId>org.sonatype.plugins</groupId>
+						<artifactId>nexus-staging-maven-plugin</artifactId>
+						<version>1.6.5</version>
+						<extensions>true</extensions>
+						<configuration>
+							<serverId>ossrh</serverId>
+							<nexusUrl>https://oss.sonatype.org/</nexusUrl>
+							<autoReleaseAfterClose>true</autoReleaseAfterClose>
+						</configuration>
+					</plugin>
+				</plugins>
+			</build>
+
+			<!-- distribution manager -->
+			<distributionManagement>
+				<snapshotRepository>
+					<id>ossrh</id>
+					<url>https://oss.sonatype.org/content/repositories/snapshots</url>
+				</snapshotRepository>
+				<repository>
+					<id>ossrh</id>
+					<url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+				</repository>
+			</distributionManagement>
+
+		</profile>
+
+		<profile>
+			<id>release</id>
+
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-javadoc-plugin</artifactId>
+						<version>2.10.1</version>
+						<executions>
+							<execution>
+								<id>attach-javadocs</id>
+								<goals>
+									<goal>jar</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>
+
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
 						<artifactId>maven-source-plugin</artifactId>
-						<version>2.1.2</version>
+						<version>2.4</version>
 						<executions>
 							<execution>
 								<id>attach-sources</id>
 								<goals>
 									<goal>jar</goal>
-								</goals>
+								</goals>								
 							</execution>
 						</executions>
 					</plugin>
-					<plugin>
-						<artifactId>maven-javadoc-plugin</artifactId>
-						<version>2.8</version>
-						<executions>
-							<execution>
-								<id>attach-docs</id>
-								<goals>
-									<goal>jar</goal>
-								</goals>
-							</execution>
-						</executions>
-					</plugin>
+
 				</plugins>
 			</build>
 		</profile>
+		
 	</profiles>
 </project>

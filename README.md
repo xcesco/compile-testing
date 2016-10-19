@@ -10,7 +10,7 @@ The latest release is version `0.8`.  Include it as a [Maven](http://maven.apach
 
 ```
 <dependency>
-  <groupId>com.google.testing.compile</groupId>
+  <groupId>com.abubusoft.testing.compile</groupId>
   <artifactId>compile-testing</artifactId>
   <version>0.8</version>
   <scope>test</scope>
