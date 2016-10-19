@@ -11,13 +11,13 @@ A library for testing javac compilation with or without annotation processors. S
 Latest Release
 --------------
 
-The latest release is version `0.8`.  Include it as a [Maven](http://maven.apache.org/) dependency with the following snippet:
+The latest release is version `1.0.1`.  Include it as a [Maven](http://maven.apache.org/) dependency with the following snippet:
 
 ```
 <dependency>
   <groupId>com.abubusoft.testing.compile</groupId>
   <artifactId>compile-testing</artifactId>
-  <version>0.8</version>
+  <version>1.0.1</version>
   <scope>test</scope>
 </dependency>
 ```
