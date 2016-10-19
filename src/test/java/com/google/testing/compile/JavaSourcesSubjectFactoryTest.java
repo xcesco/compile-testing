@@ -28,7 +28,6 @@ import com.google.common.io.ByteSource;
 import com.google.common.io.Resources;
 import com.google.common.truth.FailureStrategy;
 import com.google.common.truth.TestVerb;
-import com.google.errorprone.annotations.CanIgnoreReturnValue;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -37,6 +36,7 @@ import org.junit.runners.JUnit4;
 import java.io.IOException;
 import java.io.Writer;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
@@ -65,7 +65,7 @@ public class JavaSourcesSubjectFactoryTest {
       throw new VerificationException(message);
     }
   });
-
+  
   private static final JavaFileObject HELLO_WORLD =
       JavaFileObjects.forSourceLines(
           "test.HelloWorld",
@@ -736,7 +736,7 @@ public class JavaSourcesSubjectFactoryTest {
           .contains("Expected 42 notes, but found the following 2 notes:\n");
     }
   }
-
+  
   @Test
   public void failsToCompile() {
     JavaFileObject brokenFileObject = JavaFileObjects.forResource("HelloWorld-broken.java");
@@ -846,6 +846,65 @@ public class JavaSourcesSubjectFactoryTest {
       assertThat(expected.getMessage()).contains(GeneratingProcessor.GENERATED_CLASS_NAME);
       assertThat(expected.getMessage()).contains(failingExpectationName);
     }
+  }
+
+  @Test
+  public void generatesSources_forEachOfWhich() {
+    final Map<String, JavaFileObject> results = new HashMap<String, JavaFileObject>();
+    VERIFY.about(javaSource())
+        .that(JavaFileObjects.forResource("HelloWorld.java"))
+        .processedWith(new GeneratingProcessor())
+        .compilesWithoutError()
+        .and().generatesSources().forEachOfWhich(new CompileTester.CompilationResultConsumer() {
+      public void accept(String name, JavaFileObject javaFileObject) {
+        results.put(name, javaFileObject);
+      }
+    });
+    assertThat(results.keySet()).containsExactly("Blah.java");
+  }
+
+  @Test
+  public void generatesSources_forAllOfWhich() {
+    VERIFY.about(javaSource())
+        .that(JavaFileObjects.forResource("HelloWorld.java"))
+        .processedWith(new GeneratingProcessor())
+        .compilesWithoutError()
+        .and().generatesSources().forAllOfWhich(new CompileTester.CompilationResultsConsumer() {
+      @Override
+      public void accept(Map<String, JavaFileObject> javaFileObjectMap) {
+        assertThat(javaFileObjectMap.keySet()).containsExactly("Blah.java");
+      }
+    });
+  }
+
+  @Test
+  public void generatesClasses_forEachOfWhich() {
+    final Map<String, JavaFileObject> results = new HashMap<String, JavaFileObject>();
+    VERIFY.about(javaSource())
+        .that(JavaFileObjects.forResource("HelloWorld.java"))
+        .processedWith(new GeneratingProcessor())
+        .compilesWithoutError()
+        .and().generatesClasses().forEachOfWhich(new CompileTester.CompilationResultConsumer() {
+      @Override
+      public void accept(String name, JavaFileObject javaFileObject) {
+        results.put(name, javaFileObject);
+      }
+    });
+    assertThat(results.keySet()).containsAllOf("Blah.class", "test/HelloWorld.class");
+  }
+
+  @Test
+  public void generatesClasses_forAllOfWhich() {
+    VERIFY.about(javaSource())
+        .that(JavaFileObjects.forResource("HelloWorld.java"))
+        .processedWith(new GeneratingProcessor())
+        .compilesWithoutError()
+        .and().generatesClasses().forAllOfWhich(new CompileTester.CompilationResultsConsumer() {
+      @Override
+      public void accept(Map<String, JavaFileObject> javaFileObjectMap) {
+        assertThat(javaFileObjectMap.keySet()).containsAllOf("Blah.class", "test/HelloWorld.class");
+      }
+    });
   }
 
   @Test
@@ -1016,7 +1075,6 @@ public class JavaSourcesSubjectFactoryTest {
       }
     }
 
-    @CanIgnoreReturnValue
     @Override
     public boolean process(Set<? extends TypeElement> annotations, RoundEnvironment roundEnv) {
       return false;

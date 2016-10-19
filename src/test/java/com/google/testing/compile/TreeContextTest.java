@@ -21,7 +21,6 @@ import com.google.common.collect.ImmutableList;
 
 import com.sun.source.tree.CompilationUnitTree;
 import com.sun.source.tree.Tree;
-import com.sun.source.util.TreePath;
 import com.sun.source.util.Trees;
 
 import org.junit.Rule;
@@ -75,13 +74,13 @@ public class TreeContextTest {
   @Test
   public void getPositionInfo_invalid() {
     expectedExn.expect(IllegalArgumentException.class);
-    long unused = treeContext().getNodeStartLine(invalidNode());
+    treeContext().getNodeStartLine(invalidNode());
     expectedExn.expect(IllegalArgumentException.class);
-    unused = treeContext().getNodeStartColumn(invalidNode());
+    treeContext().getNodeStartColumn(invalidNode());
     expectedExn.expect(IllegalArgumentException.class);
-    unused = treeContext().getNodeEndLine(invalidNode());
+    treeContext().getNodeEndLine(invalidNode());
     expectedExn.expect(IllegalArgumentException.class);
-    unused = treeContext().getNodeEndColumn(invalidNode());
+    treeContext().getNodeEndColumn(invalidNode());
   }
 
   @Test
@@ -93,7 +92,7 @@ public class TreeContextTest {
   @Test
   public void getNodePath_invalid() {
     expectedExn.expect(IllegalArgumentException.class);
-    TreePath unused = treeContext().getNodePath(invalidNode());
+    treeContext().getNodePath(invalidNode());
   }
 
   private TreeContext treeContext() {
