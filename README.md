@@ -1,3 +1,5 @@
+Customized version with the aim to extract source generated with annotation processor as string.
+
 Compile Testing
 ===============
 
