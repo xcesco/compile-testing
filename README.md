@@ -1,3 +1,6 @@
+[![maven central](https://maven-badges.herokuapp.com/maven-central/com.abubusoft/compile-testing/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.abubusoft/compile-testing)
+[![build status](https://img.shields.io/travis/xcesco/compile-testing.svg?style=flat-square)](https://travis-ci.org/xcesco/compile-testing)
+
 Customized version with the aim to extract source generated with annotation processor as string.
 
 Compile Testing
