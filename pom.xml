@@ -2,9 +2,9 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
-	<groupId>com.abubusoft.testing.compile</groupId>
+	<groupId>com.abubusoft</groupId>
 	<artifactId>compile-testing</artifactId>
-	<version>1.0.1</version>
+	<version>1.0.2</version>
 
 	<name>Compile Testing</name>
 	<description>Utilities for testing compilation. Fork from com.abubusoft.testing.compile</description>
